@@ -3,6 +3,9 @@ import java.util.*;
 public class Anagram{
 	
 	static TrieSTNew<String> dictionary = new TrieSTNew<>();
+	static List<String> solutions = new ArrayList<>();
+	static List<String> solutions2 = new ArrayList<>();
+	
 	
 	public static void main(String[] args) throws FileNotFoundException{
 		
@@ -17,7 +20,7 @@ public class Anagram{
 		//Loop through the dictionary to add all the values 
 		while (sc.hasNext()) {
 			String word = sc.nextLine();
-				dictionary.put(word, word);
+			dictionary.put(word, word);
 		}
 		sc.close();
 		
@@ -37,41 +40,100 @@ public class Anagram{
 			anagrams[i] = scInput.nextLine();
 		}
 		scInput.close();
-		List<String> solutions = new ArrayList<>();
+		
+		int temp = 0;
 		for(int i = 0; i < anagrams.length; i++) {
 			//removing spaces
 			if(anagrams[i].contains(" ")) anagrams[i].replaceAll("\\s", "");
 			//Running main method
-			solutions.addAll(search(anagrams[i].toCharArray(), new StringBuilder(), solutions, 0));
+			search(anagrams[i].toCharArray(), new StringBuilder(), 0, anagrams[i]);
+			
+			
+			
+			
 		}
-		System.out.println(solutions.size());
-	
-	
-	}
-	
-	public static List<String> search(char[] anagram, StringBuilder str, List<String> solutions, int begin) {
-		for(int i = 0; i < anagram.length; i++) {
-			str.append(anagram[begin]);
-			System.out.println(str.toString());
-			int val = dictionary.searchPrefix(str.toString());
-			System.out.print(val);
-			if(val == 1) search(anagram, str, solutions, begin + 1);
-			if(val == 2) {
-				if(!solutions.contains(str.toString()))solutions.add(str.toString());
-			}
-			if(val == 3) {
-				if(!solutions.contains(str.toString())) {
-					solutions.add(str.toString());
-					search(anagram, str, solutions, begin + 1);
+		
+		try {
+			FileWriter fw = new FileWriter(outputFile);
+			for(int j = 0; j < anagrams.length; j++) {
+				fw.write("Here are the results for " + "'" + anagrams[j] + "'");
+				for (int k = 0; k < solutions.size(); k++){
+					if(solutions2.get(k).contains(anagrams[j])) {
+						int len = anagrams[j].length();
+						String ans = (String) solutions2.get(k).subSequence(0, solutions2.get(k).length() - len);
+						fw.write(ans);
+					}
 				}
-				
 			}
-			if(val == 0) {
-				search(anagram, str.deleteCharAt(str.length() - 1), solutions, begin++);
-				break;
-				
-			}
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return solutions;
+	
+	
 	}
+	
+	public static void search(char[] anagram, StringBuilder str, int begin, String word) {
+			int val = dictionary.searchPrefix(str.toString());
+			//If a prefix of a word
+			if(val == 1 || val ==3) {
+				//Loop through the char list
+				for(int i = 0; i < anagram.length; i++) {
+					//make new char[] of size one less than current iteration
+					char chars[] = new char[anagram.length - 1];
+					//Make new string with added char taken from []
+					StringBuilder str2 = new StringBuilder(str.toString());
+					str2.append(anagram[i]);
+					//temp int as placeholder
+					int temp = 0;
+	
+					for(int j = 0; j < anagram.length; j++) {
+						if(j == i) continue;
+						chars[temp] = anagram[j];
+						temp++;
+					}
+					search(chars, str2, begin+1, word);
+				}
+			}
+			//If sol'n add to Solutions List
+			if((val == 2 || val == 3) && anagram.length == 0) {
+				if(!solutions.contains(str.toString())) {
+					//work around to store the anagram name with the solved anagram
+					StringBuilder temp = new StringBuilder(str);
+					temp.append(word);
+					solutions2.add(temp.toString());
+					//need both for testing if solution is contained logic to work
+					solutions.add(str.toString());
+					
+					
+				}
+			}
+			//Failed attempt at multiword anagrams
+			/*if(val == 2 && anagram.length != 0){
+				System.out.println(str.toString());
+				for(int i = 0; i < anagram.length; i++) {
+					char chars[] = new char[anagram.length - 1];
+					StringBuilder str2 = new StringBuilder(str.toString());
+					int temp = 0;
+					
+					str2.append(anagram[i]);
+					for(int j = 0; j < anagram.length; j++) {
+						if(j == i) continue;
+						chars[temp] = anagram[j];
+						temp++;
+					}
+					search(chars, str2.append(" "), begin+1);
+				}
+			}  */
+			//if nothing just break
+			if(val == 0) {
+				
+				return;
+			}
+			
+			return;
+	}
+	
+	
 }
