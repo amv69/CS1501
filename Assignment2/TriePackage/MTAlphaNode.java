@@ -44,7 +44,10 @@ public class MTAlphaNode<V> implements TrieNodeInt<V>
 	
 	public Iterable<TrieNodeInt<V>> children() {
 		Queue<TrieNodeInt<V>> queue = new LinkedList<TrieNodeInt<V>>();
-		return null;
+		for(int i = 0; i < this.getDegree(); i++){
+			if(next[i] != null) queue.add(next[i]);
+		}
+		return queue;
 	}
 
 	// You must supply the methods for this class.  See TrieNodeInt.java
