@@ -18,43 +18,54 @@ public class DLBNode<V> implements TrieNodeInt<V>
     	protected TrieNodeInt<V> child;
     }
 
-	@Override
+	public DLBNode() {
+		val = null;
+		degree = 0;
+		front = new Nodelet();
+	}
+	public DLBNode(V data) {
+		val = data;
+		degree = 0;
+		front = new Nodelet();
+	}
 	public TrieNodeInt<V> getNextNode(char c) {
-		// TODO Auto-generated method stub
-		return null;
+		Nodelet node = front;
+		while(true) {
+			if(node.cval == c) return front.child;
+			if(node.rightSib == null) node.rightSib = new Nodelet();
+			node.rightSib.cval = c;
+			node = node.rightSib;
+		}
 	}
 
-	@Override
+	
 	public void setNextNode(char c, TrieNodeInt<V> node) {
-		// TODO Auto-generated method stub
-		
+		if(front.child == null) degree ++;
+		front.child = node;
+		front.cval = c;
 	}
 
-	@Override
+	
 	public V getData() {
-		// TODO Auto-generated method stub
-		return null;
+		return val;
 	}
 
-	@Override
+	
 	public void setData(V data) {
-		// TODO Auto-generated method stub
-		
+		val = data;
 	}
 
-	@Override
+	
 	public int getDegree() {
-		// TODO Auto-generated method stub
-		return 0;
+		return degree;
 	}
 
-	@Override
+	
 	public int getSize() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	
 	public Iterable<TrieNodeInt<V>> children() {
 		// TODO Auto-generated method stub
 		return null;

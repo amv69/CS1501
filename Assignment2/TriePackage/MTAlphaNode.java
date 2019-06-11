@@ -16,6 +16,22 @@ public class MTAlphaNode<V> implements TrieNodeInt<V>
     protected TrieNodeInt<V> [] next;
 	protected int degree;
 	
+	@SuppressWarnings("unchecked")
+	public MTAlphaNode() {
+		val = null;
+		degree = 0;
+		next = (MTAlphaNode<V> []) new MTAlphaNode<?>[123]; //R gave an outofbounds error
+		
+	}
+	@SuppressWarnings("unchecked")
+	public MTAlphaNode(V data) {
+		val = data;
+		degree = 0;
+		next = (MTAlphaNode<V> []) new MTAlphaNode<?>[123];
+	}
+	public MTAlphaNode(DLBNode<V> oldNode) {
+		
+	}
 	public TrieNodeInt<V> getNextNode(char c) {
 		return next[c];
 	}
@@ -38,8 +54,7 @@ public class MTAlphaNode<V> implements TrieNodeInt<V>
 	}
 	
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return R * 4;
 	}
 	
 	public Iterable<TrieNodeInt<V>> children() {
