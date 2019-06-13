@@ -50,6 +50,10 @@ public class DLBNode<V> implements TrieNodeInt<V>
 		return val;
 	}
 
+	public char getChar(){
+		return front.cval;
+	}
+
 	
 	public void setData(V data) {
 		val = data;

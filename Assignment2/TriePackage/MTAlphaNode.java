@@ -20,17 +20,19 @@ public class MTAlphaNode<V> implements TrieNodeInt<V>
 	public MTAlphaNode() {
 		val = null;
 		degree = 0;
-		next = (MTAlphaNode<V> []) new MTAlphaNode<?>[123]; //R gave an outofbounds error
+		next = (MTAlphaNode<V> []) new MTAlphaNode<?>[R]; //R gave an outofbounds error
 		
 	}
 	@SuppressWarnings("unchecked")
 	public MTAlphaNode(V data) {
-		val = data;
+		val = data;	
 		degree = 0;
-		next = (MTAlphaNode<V> []) new MTAlphaNode<?>[123];
+		next = (MTAlphaNode<V> []) new MTAlphaNode<?>[R];
 	}
 	public MTAlphaNode(DLBNode<V> oldNode) {
-		
+		val = oldNode.val;
+		degree = oldNode.degree;
+		next = oldNode.getNextNode(oldNode.getChar());
 	}
 	public TrieNodeInt<V> getNextNode(char c) {
 		return next[c];
