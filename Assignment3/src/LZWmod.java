@@ -11,11 +11,11 @@
 
 public class LZWmod {
     private static int R = 256;        // number of input chars
-    private static int L = 4096;       // number of codewords = 2^W
-    private static int W = 12;         // codeword width
+    private static int L = 512;       // number of codewords = 2^W
+    private static int W = 9;         // codeword width
 
     public static void compress(String type) { 
-    	double compression = 0;
+    	double compression = 0; //These Variables are used to monitor compression
     	double read = 0;
     	double newR = 0;
     	double oldR = 0;
@@ -28,7 +28,6 @@ public class LZWmod {
        
         while (input.length() > 0) {
         	String s = st.longestPrefixOf(input);
-        	
         	
         //Different Conditions
         	if(type.equals("n")) {
@@ -43,8 +42,8 @@ public class LZWmod {
 	                st.put(input.substring(0, t + 1), code++);
 	            
 	            else if(t < input.length() && W <16) {
-	            	W = W + 1;
-	            	L = L*2;
+	            	W = W + 1; //Increase codebook size
+	            	L = L * 2;
 	            	st.put(input.substring(0, t + 1), code++);
 	            }
 	            input = input.substring(t);            // Scan past s in input.
@@ -59,9 +58,9 @@ public class LZWmod {
 	            read += (t*8);
 	            newR = read/compression;
 	            //Logic used to monitor when to reset
-	            if(W == 16 && code >= 65536 && (oldR/newR) > 1.1) {
-	            	W = 12;
-	            	L = 4096;
+	            if(W == 16 && code >= 65536 && (oldR/newR) > 1.0) {
+	            	W = 9;
+	            	L = 512;
 	            	st = new TST<Integer>();
 	            	for (int i = 0; i < R; i++)
 	                    st.put("" + (char) i, i);
@@ -82,7 +81,7 @@ public class LZWmod {
 	            /*if(t < input.length() && code == 65536 && W==16) {
 	            	st = new TST<Integer>();
 	            	for (int i = 0; i < R; i++)
-	                    st.put("" + (char) i, i);
+	                    st.put("" + (char) i, i);        //Ignore this, just for reset
 	            	W = 12;
 	            	L = 4096;
 	            	code = R + 1;
@@ -99,7 +98,7 @@ public class LZWmod {
 
 
     public static void expand() {
-    	double compression = 0;
+    	double compression = 0;  //Variables for monitoring
     	double read = 0;
     	double newR = 0;
     	double oldR = 0;
@@ -126,7 +125,7 @@ public class LZWmod {
         		if (i == codeword) s = val + val.charAt(0);   // special case hack
         		if (i < L - 1 ) st[i++] = val + s.charAt(0);
         		else if(W < 16) {
-        			W = W + 1;
+        			W = W + 1; //Increase codebook size
         			L = L * 2;
         			st[i++] = val + s.charAt(0);
         		}
@@ -138,9 +137,9 @@ public class LZWmod {
         	      read = read + (val.length() * 8);
         	      newR = read/compression;
 
-        	      if(W == 16 && i>= 65536 && (oldR/newR) > 1.1){
-        	        W = 12;
-        	        L = 4096;
+        	      if(W == 16 && i>= 65536 && (oldR/newR) > 1.0){
+        	        W = 9;  //Reset Codebook size when full and Ratio is bad
+        	        L = 512;
         	        st = new String[65536];
         	        for (i = 0; i < R; i++)
         	            st[i] = "" + (char) i;
@@ -162,7 +161,7 @@ public class LZWmod {
         	        if (i < L-1) st[i++] = val + s.charAt(0);
 
         	        else if(W < 16){
-        	           W = W + 1;
+        	           W = W + 1; //Increase codebook size
         	           L = L * 2;
         	           st[i++] = val + s.charAt(0);
         	        }
