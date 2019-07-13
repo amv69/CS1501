@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.math.*;
 
 public class Substitute implements SymCipher{
 		
@@ -17,7 +18,6 @@ public class Substitute implements SymCipher{
 			byte old = key[i]; //storing valuing
 			key[i] = key[newPos]; 
 			key[newPos] = old; //replacing value
-			solution[i] = (byte)newPos;
 		}
 		for(int i = 0; i < key.length; i ++){
 			key[i] = (byte)Math.abs(key[i]);

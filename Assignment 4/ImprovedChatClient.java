@@ -18,7 +18,7 @@ import java.math.*;
 
 public class ImprovedChatClient extends JFrame implements Runnable, ActionListener {
 
-    public static final int PORT = 8765; //5678
+    public static final int PORT = 8765;
     ObjectOutputStream myWriter;
     ObjectInputStream myReader;
     JTextArea outputArea;
@@ -32,19 +32,19 @@ public class ImprovedChatClient extends JFrame implements Runnable, ActionListen
     {
         try {
 
-        myName = JOptionPane.showInputDialog(this, "Enter your user name: ");
-        serverName = JOptionPane.showInputDialog(this, "Enter the server name: ");
         InetAddress addr =
                 InetAddress.getByName(serverName);
         connection = new Socket(addr, PORT);   // Connect to server with new
                                                // Socket
 
-        myWriter =new ObjectOutputStream(connection.getOutputStream());
+        myWriter = new ObjectOutputStream(connection.getOutputStream());
         myWriter.flush();
         myReader = new ObjectInputStream(connection.getInputStream());
 
         BigInteger E = (BigInteger)myReader.readObject();
+        System.out.println("Received E: " + E);
         BigInteger N = (BigInteger)myReader.readObject();
+        System.out.println("Received N: " + N);
         String encType = (String)myReader.readObject();
 
         if (encType.equals("Add")){
@@ -57,12 +57,17 @@ public class ImprovedChatClient extends JFrame implements Runnable, ActionListen
         }
 
         byte[] bytes = cipher.getKey();
-        BigInteger key = new BigInteger(bytes);
-        key = key.abs();
+        BigInteger key = new BigInteger(1, bytes);
         key = key.modPow(E, N);
-        myWriter.writeObject(key);
-        myWriter.writeObject(cipher.encode(myName));
+        System.out.println("Generated Key: " + key);
+        myWriter.writeObject(key); myWriter.flush();
 
+        myName = JOptionPane.showInputDialog(this, "Enter your user name: ");
+
+        myWriter.writeObject(cipher.encode(myName)); myWriter.flush();
+
+        serverName = JOptionPane.showInputDialog(this, "Enter the server name: ");
+        
         this.setTitle(myName);      // Set title to identify chatter
 
         Box b = Box.createHorizontalBox();  // Set up graphical environment for
@@ -91,7 +96,7 @@ public class ImprovedChatClient extends JFrame implements Runnable, ActionListen
                     public void windowClosing(WindowEvent e)
                     { 
                         try{
-                            myWriter.writeObject(cipher.encode("CLIENT CLOSING"));
+                            myWriter.writeObject(cipher.encode("CLIENT CLOSING")); myWriter.flush();
                             System.exit(0);
                         } catch(Exception e3){
                             e3.printStackTrace();
@@ -116,8 +121,26 @@ public class ImprovedChatClient extends JFrame implements Runnable, ActionListen
         {
              try {
                 byte[] currMsg = (byte[])myReader.readObject();
-                String msg = new String(SecureChatServer.cipher.decode(currMsg));
-			    outputArea.append(msg+"\n");
+
+                System.out.println("Bytes Received: ");
+                    for (int i = 0; i < currMsg.length; i++){
+                        System.out.print(currMsg[i] + " ");
+                    }
+                    System.out.println();
+
+                String msg = new String(cipher.decode(currMsg));
+                byte [] decoded = msg.getBytes();
+
+                System.out.println("Decoded Bytes: ");
+                    for (int i = 0; i < decoded.length; i++){
+                        System.out.print(decoded[i] + " ");
+                    }
+                    System.out.println();
+
+                System.out.println("Decrypted String: " + msg);
+
+
+			    outputArea.append(msg + "\n");
              }
              catch (Exception e)
              {
@@ -125,7 +148,6 @@ public class ImprovedChatClient extends JFrame implements Runnable, ActionListen
                 break;
              }
         }
-        System.exit(0);
     }
 
     public void actionPerformed(ActionEvent e)
@@ -133,12 +155,31 @@ public class ImprovedChatClient extends JFrame implements Runnable, ActionListen
         String currMsg = e.getActionCommand();      // Get input value
         inputField.setText("");
         try{
-            myWriter.writeObject(cipher.encode(myName + ":" + currMsg));
+            byte [] originalBytes = currMsg.getBytes();
+            byte [] encoding = cipher.encode(currMsg);
+
+            myWriter.writeObject(cipher.encode(myName + ":" + currMsg)); myWriter.flush();
+
+            System.out.println("Original String Message: " + currMsg + "\n");
+
+            System.out.println("Corresponding Array of Bytes: ");
+                    for (int i = 0; i < originalBytes.length; i++){
+                        System.out.print(originalBytes[i] + " ");
+                    }
+                    System.out.println();
+
+            System.out.println("Encrypted Array of Bytes: ");
+                    for (int i = 0; i < encoding.length; i++){
+                        System.out.print(encoding[i] + " ");
+                    }
+                    System.out.println();
+
+
+
         } catch(Exception e4){
             e4.printStackTrace();
-           // Add name and send it
         }
-    }                                               // to Server
+    }                                               
 
     public static void main(String [] args)
     {

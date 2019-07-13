@@ -32,6 +32,7 @@ public class Add128 implements SymCipher{
 			}
 			lengthCheck++;
 		}
+		
 		return code;
 	}
 
