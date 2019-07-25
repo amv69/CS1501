@@ -67,6 +67,13 @@ public class Edge implements Comparable<Edge> {
         return String.format("%d-%d %.2f", v, w, weight);
     }
 
+    public int from() {
+        return v;
+    }
+
+    public int to() {
+        return w;
+    }
 
    /**
      * Test client.

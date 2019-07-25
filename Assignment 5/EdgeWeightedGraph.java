@@ -18,12 +18,13 @@
  *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/43mst">Section 4.3</a> of
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
-
+import java.util.*;
+import java.io.*;
 
 public class EdgeWeightedGraph {
     private final int V;
     private int E;
-    private Bag<Edge>[] adj;
+    private LinkedList<Edge>[] adj;
     
    /**
      * Create an empty edge-weighted graph with V vertices.
@@ -32,8 +33,8 @@ public class EdgeWeightedGraph {
         if (V < 0) throw new RuntimeException("Number of vertices must be nonnegative");
         this.V = V;
         this.E = 0;
-        adj = (Bag<Edge>[]) new Bag[V];
-        for (int v = 0; v < V; v++) adj[v] = new Bag<Edge>();
+        adj = (LinkedList<Edge>[]) new LinkedList[V];
+        for (int v = 0; v < V; v++) adj[v] = new LinkedList<Edge>();
     }
 
    /**
