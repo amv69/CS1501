@@ -1,5 +1,9 @@
 import java.io.*;
 import java.util.*;
+	/**
+	 * Assignment 5
+	 * 
+	 */
 
 public class Assignment5{
 	
@@ -9,7 +13,10 @@ public class Assignment5{
 	 static int weight;
 	 static Edge E;
 	 static EdgeWeightedGraph adjacencyList;
-
+	 /**
+	 * Main Runs the program
+	 * 
+	 */
 	public static void main(String args[]){
 		File file = new File(args[0]);
 		Scanner sc = new Scanner(System.in);
@@ -81,9 +88,7 @@ public class Assignment5{
 	}
 	/**
 	 * Runs Lazy Prim's Algorithm on the Adjacency list
-	 * Displays out the MST 
-	 * 
-	 * 
+	 * Displays the MST 
 	 */
 	public static void prims(){
 		LazyPrimMSTTrace prim = new LazyPrimMSTTrace(adjacencyList);
