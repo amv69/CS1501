@@ -45,25 +45,14 @@ public class Assignment5{
 					System.out.println(adjacencyList.toString());
 					break;
 				case 2:
-					
-
+					prims();
 					break;
 				case 3:
 					System.out.println("Selecting a start vertex(int)");
 					int i = input.nextInt();
-					DijkstraSP sp = new DijkstraSP(adjacencyList, i);
 					System.out.println("Enter vertex to path to(int)");
 					int j = input.nextInt();
-					if(sp.hasPathTo(j)){
-						Iterable<Edge> path = sp.pathTo(j);
-						for(Edge e: path){
-							System.out.println(e);
-						}
-					}
-					else{
-						System.out.print("Path does not exist");
-					}
-					
+					dijkstra(i,j);
 					break;
 				case 4:
 					break;
@@ -79,11 +68,49 @@ public class Assignment5{
 
 		}
 	}
+	/**
+	 * Adds an Edge to the Adjacency List
+	 * @param v The first Vertex
+	 * @param w The connecting Vertex
+	 * @param weight The weight of the edge
+	 */
 
 	public static void addEdge(int v, int w, int weight){
 		Edge e = new Edge(v, w, weight);
 		adjacencyList.addEdge(e); //Since it is undirected
 	}
+	/**
+	 * Runs Lazy Prim's Algorithm on the Adjacency list
+	 * Displays out the MST 
+	 * 
+	 * 
+	 */
+	public static void prims(){
+		LazyPrimMSTTrace prim = new LazyPrimMSTTrace(adjacencyList);
+		Iterable<Edge> primEdges = prim.edges();
+		for(Edge e: primEdges){
+			System.out.println(e);
+		}
+		System.out.println("with total weight " + prim.weight());
+	}
 
+	/**
+	 * Runs Djikstra's Algorithm on the Adjacency list
+	 * Displays the shortest path from vertex i to j
+	 * @param i starting vertex
+	 * @param j ending vertex
+	 */
+	public static void dijkstra(int i, int j){
+		DijkstraSP sp = new DijkstraSP(adjacencyList, i);
+		if(sp.hasPathTo(j)){
+			Iterable<Edge> path = sp.pathTo(j);
+			for(Edge e: path){
+				System.out.println(e);
+			}
+		}
+		else{
+			System.out.println("Path does not exist");
+		}
+	}
 
 }

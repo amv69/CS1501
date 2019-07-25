@@ -39,13 +39,11 @@ public class LazyPrimMSTTrace {
             Edge e = pq.delMin();                      // smallest edge on pq
             int v = e.either(), w = e.other(v);        // two endpoints
             assert marked[v] || marked[w];
-            System.out.println("	Smallest Edge: " + e);
             if (marked[v] && marked[w])
-            {	System.out.println("		Back Edge - Not added");
+            {	
             	continue;      // lazy, both v and w already scanned
             }
             mst.enqueue(e);                            // add e to MST
-            System.out.println("		Added to MST");
             weight += e.weight();
             if (!marked[v]) scan(G, v);               // v becomes part of tree
             if (!marked[w]) scan(G, w);               // w becomes part of tree
@@ -60,18 +58,17 @@ public class LazyPrimMSTTrace {
         for (Edge e : G.adj(v))
             if (!marked[e.other(v)])
             {
-            	System.out.println("   Adding " + e + " to the PQ ");
+            	
             	pq.insert(e);
             }
     }
         
     private void showPQ(MinPQ<Edge> pq)
     {
-    	System.out.print("PQ Contents: ");
+    	
     	for (Edge e : pq) {
-            System.out.print(e + " : ");
+
         }
-        System.out.println();
     }
     
     // return edges in MST as an Iterable
