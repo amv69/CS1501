@@ -70,13 +70,14 @@ public class EdgeWeightedGraph {
     }
     /*
     public EdgeWeightedGraph add(int v){
-        LinkedList<Edge>[] adj2 = (LinkedList<Edge>[]) new LinkedList[V + 1];
+        LinkedList<Edge>[] adj2 = (LinkedList<Edge>[]) new LinkedList[v];
+        EdgeWeightedGraph(v)
         for(int i = 0; i < V; i++){
             adj2[i] = adj[i];
         }
-        adj2[V + 1] = new LinkedList<Edge>();
+        adj2[v] = new LinkedList<Edge>();
         return adj2;
-    } */
+    } 
    /**
      * Return the number of vertices in this graph.
      */
