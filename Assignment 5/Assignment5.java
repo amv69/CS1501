@@ -13,6 +13,7 @@ public class Assignment5{
 	 static int weight;
 	 static Edge E;
 	 static EdgeWeightedGraph adjacencyList;
+	 static EdgeWeightedGraph oldNodes = new EdgeWeightedGraph(50);
 	 /**
 	 * Main Runs the program
 	 * 
@@ -64,8 +65,14 @@ public class Assignment5{
 				case 4:
 					break;
 				case 5:
+					System.out.println("Select a vertex to remove(int)");
+					int down = input.nextInt();
+					nodeDown(down);
 					break;
 				case 6:
+					System.out.println("Select a vertex to Add(int)");
+					int up = input.nextInt();
+					nodeUp(up);
 					break;
 				case 7:
 					break;
@@ -81,10 +88,43 @@ public class Assignment5{
 	 * @param w The connecting Vertex
 	 * @param weight The weight of the edge
 	 */
-
 	public static void addEdge(int v, int w, int weight){
 		Edge e = new Edge(v, w, weight);
-		adjacencyList.addEdge(e); //Since it is undirected
+		adjacencyList.addEdge(e);
+	}
+	/**
+	 * Adds an Edge to the List of Old Nodes
+	 * @param v The first Vertex
+	 * @param w The connecting Vertex
+	 * @param weight The weight of the edge
+	 */
+	public static void addOldEdge(int v, int w, int weight){
+		Edge e = new Edge(v, w, weight);
+		oldNodes.addEdge(e);
+	}
+	/**
+	 * Removes a Node from the Adjacency List
+	 * @param v The first Vertex to search for
+	 */
+	public static void nodeDown(int v){
+		for(Edge e: adjacencyList.edges()){
+			if( e.getV() == v  || e.getW() == v){
+				//adjacencyList.remove(e);
+				addOldEdge(e.getV(), e.getW(), (int)e.weight());
+			}
+		}
+	}
+	/**
+	 * Adds the node back to the adjacency list if already removed
+	 * @param v The first Vertex to search for
+	 */
+	public static void nodeUp(int v){
+		for(Edge e: oldNodes.edges()){
+			if(e.getV() == v || e.getW() == v){
+				addEdge(e.getV(), e.getW(), (int)e.weight());
+				//oldNodes.remove(e);
+			}
+		}
 	}
 	/**
 	 * Runs Lazy Prim's Algorithm on the Adjacency list
@@ -98,7 +138,6 @@ public class Assignment5{
 		}
 		System.out.println("with total weight " + prim.weight());
 	}
-
 	/**
 	 * Runs Djikstra's Algorithm on the Adjacency list
 	 * Displays the shortest path from vertex i to j

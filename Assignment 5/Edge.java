@@ -75,6 +75,15 @@ public class Edge implements Comparable<Edge> {
         return w;
     }
 
+    public int getV(){
+        return v;
+    }
+
+    public int getW(){
+        return w;
+    }
+
+
    /**
      * Test client.
      */
