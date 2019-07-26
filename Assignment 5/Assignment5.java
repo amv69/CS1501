@@ -14,6 +14,7 @@ public class Assignment5{
 	 static Edge E;
 	 static EdgeWeightedGraph adjacencyList;
 	 static EdgeWeightedGraph oldNodes = new EdgeWeightedGraph(50);
+	 static int numVertex;
 	 /**
 	 * Main Runs the program
 	 * 
@@ -27,7 +28,7 @@ public class Assignment5{
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		int numVertex = (int)sc.nextInt();
+		numVertex = (int)sc.nextInt();
 		int numEdge = (int)sc.nextInt();
 		adjacencyList = new EdgeWeightedGraph(numVertex);
 		while( sc.hasNextInt()){
@@ -47,6 +48,8 @@ public class Assignment5{
 			System.out.println("6: Node Up");
 			System.out.println("7: Change Weight");
 			System.out.println("8: Quit");
+			System.out.println("----EXTRA CREDIT----");
+			System.out.println("9: Add Vertex(Not Yet)");
 			int option = input.nextInt();
 			switch(option){
 				case 1:
@@ -77,6 +80,10 @@ public class Assignment5{
 				case 7:
 					break;
 				case 8: System.exit(0);
+					break;
+				case 9:
+					//addNewVertex();
+					break;
 			}
 
 
@@ -91,7 +98,21 @@ public class Assignment5{
 	public static void addEdge(int v, int w, int weight){
 		Edge e = new Edge(v, w, weight);
 		adjacencyList.addEdge(e);
-	}
+	} /*
+	public static void addNewVertex(){
+		Scanner temp = new Scanner(System.in);
+		adjacencyList = adjacencyList.add(++numVertex);
+		// EdgeWeightedGraph adjacencyListTemp = new EdgeWeightedGraph(++numVertex);
+		System.out.println("How many edges are you adding to " + numVertex + " ?");
+			int amountEdges = temp.nextInt();
+			for(int i = 0; i < amountEdges; i++){
+				System.out.println("Enter connecting vertex");
+				int connect = temp.nextInt();
+				System.out.println("Enter Weight");
+				int newWeight = temp.nextInt();
+				addEdge(numVertex, connect, newWeight);
+			}
+		} */
 	/**
 	 * Adds an Edge to the List of Old Nodes
 	 * @param v The first Vertex

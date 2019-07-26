@@ -22,7 +22,7 @@ import java.util.*;
 import java.io.*;
 
 public class EdgeWeightedGraph {
-    private final int V;
+    private int V;
     private int E;
     private LinkedList<Edge>[] adj;
     
@@ -36,6 +36,7 @@ public class EdgeWeightedGraph {
         adj = (LinkedList<Edge>[]) new LinkedList[V];
         for (int v = 0; v < V; v++) adj[v] = new LinkedList<Edge>();
     }
+
 
    /**
      * Create a random edge-weighted graph with V vertices and E edges.
@@ -67,7 +68,15 @@ public class EdgeWeightedGraph {
             addEdge(e);
         }
     }
-
+    /*
+    public EdgeWeightedGraph add(int v){
+        LinkedList<Edge>[] adj2 = (LinkedList<Edge>[]) new LinkedList[V + 1];
+        for(int i = 0; i < V; i++){
+            adj2[i] = adj[i];
+        }
+        adj2[V + 1] = new LinkedList<Edge>();
+        return adj2;
+    } */
    /**
      * Return the number of vertices in this graph.
      */
