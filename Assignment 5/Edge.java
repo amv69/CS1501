@@ -14,9 +14,9 @@
  */
 public class Edge implements Comparable<Edge> { 
 
-    private final int v;
-    private final int w;
-    private final double weight;
+    private int v;
+    private int w;
+    private double weight;
 
    /**
      * Create an edge between v and w with given weight.
@@ -32,6 +32,10 @@ public class Edge implements Comparable<Edge> {
      */
     public double weight() {
         return weight;
+    }
+
+    public void changeWeight(int w){
+        this.weight = w;
     }
 
    /**

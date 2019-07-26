@@ -104,6 +104,11 @@ public class EdgeWeightedGraph {
         E++;
     }
 
+     public void remove(Edge e){
+        adj[e.getV()].remove(e);
+        adj[e.getW()].remove(e);
+    }
+
 
    /**
      * Return the edges incident to vertex v as an Iterable.

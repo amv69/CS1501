@@ -78,6 +78,13 @@ public class Assignment5{
 					nodeUp(up);
 					break;
 				case 7:
+					System.out.println("Select a vertex to Change weight of(int)");
+					int newV = input.nextInt();
+					System.out.println("Select Ending Vertex to Change weight of(int)");
+					int newW = input.nextInt();
+					System.out.println("Select new weight(int)");
+					int newWeight = input.nextInt();
+					change(newV, newW, newWeight);
 					break;
 				case 8: System.exit(0);
 					break;
@@ -130,7 +137,7 @@ public class Assignment5{
 	public static void nodeDown(int v){
 		for(Edge e: adjacencyList.edges()){
 			if( e.getV() == v  || e.getW() == v){
-				//adjacencyList.remove(e);
+				adjacencyList.remove(e);
 				addOldEdge(e.getV(), e.getW(), (int)e.weight());
 			}
 		}
@@ -175,6 +182,19 @@ public class Assignment5{
 		}
 		else{
 			System.out.println("Path does not exist");
+		}
+	}
+	/**
+	 * Change the weight of the edge from edge.weight() to newWeight
+	 * @param newV starting vertex
+	 * @param newW ending vertex
+	 * @param newWeight The weight to change the edge to
+	 */
+	public static void change(int newV, int newW, int newWeight){
+		for(Edge e: adjacencyList.edges()){
+			if((e.getV() == newV && e.getW() == newW) || (e.getV() == newW && e.getW() == newV) ) {
+				e.changeWeight(newWeight);
+			}
 		}
 	}
 
